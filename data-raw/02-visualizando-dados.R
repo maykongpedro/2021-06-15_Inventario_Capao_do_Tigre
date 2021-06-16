@@ -4,6 +4,8 @@
 if(!require("pacman")) install.packages("pacman")
 pacman::p_load(readr, tidyverse)
 
+library(ggplot2)
+'%>%' <- magrittr::`%>%`
 
 # Carregar base -----------------------------------------------------------
 base <- readr::read_rds("./data/dados_capao.rds")
@@ -16,7 +18,6 @@ base %>% dplyr::glimpse()
 
 # quantidade de linhas
 nrow(base)
-
 
 
 # criar categorias
@@ -53,7 +54,7 @@ base_classes %>%
                values_to = "classe") %>%
   # sumarizar
   dplyr::group_by(ano, classe) %>%
-  dplyr::summarise(n = n()) %>%
+  dplyr::summarise(n = dplyr::n()) %>%
   # retirar NA
   dplyr::filter(!is.na(classe)) %>%
   # modificar colunas
@@ -67,17 +68,27 @@ base_classes %>%
       str_replace_all(string = classe,",","-")
     ) %>% 
   
+  
 # montando o gráfico
   ggplot() +
-  geom_col(aes(x = classe, y = n, fill = classe)) +
+  geom_col(aes(x = classe, y = n), fill = "#35b779") +
   scale_y_continuous(expand = c(0,0), limits = c(0, 6000)) +
   facet_wrap(~ ano) +
-  #scale_fill_manual(values = ("cyan4")) +
-  scale_fill_viridis_d(option = "magma", guide = FALSE) +
-  theme_bw() 
+  labs(x = "Classes de diâmetro (cm)", 
+       y = "Número de indivíduos",
+       caption = "**Dataviz:** @maykongpedro | **Fonte:** UFPR (Laboratório de Inventário Florestal)") +
+  ggtitle("Histórico de classes de diâmetro de um remanescente <br/> de **floresta ombrófila mista**",
+          subtitle = paste0("Inventário realizado na floresta Capão do Tigre em Curitiba-PR.\n",
+                            "Premissa: medição de apenas árvores com no mínimo 10cm de DAP."))+
+  theme_bw() +
+   theme(
+    plot.title = ggtext::element_markdown(),
+    plot.caption = ggtext::element_markdown(hjust = -1.5),
+    axis.title.y = element_text(hjust = -1.5),
+    axis.title.x = element_text(vjust = -1.5),
+    #plot.margin = unit(c(1,1,1,1))
+  )
 
-  
-  
   
   
   
