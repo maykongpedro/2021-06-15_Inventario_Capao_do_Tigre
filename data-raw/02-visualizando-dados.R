@@ -61,17 +61,19 @@ base_classes %>%
     # deixar somente os anos
     ano = stringr::str_remove_all(string = ano, pattern = "classes_"),
     # retirar parentesês e colchetes
-    classe = stringr::str_remove_allstr_remove_all(string = classe, "\\(|\\]"),
+    classe = stringr::str_remove_all(string = classe, "\\(|\\]"),
     # susbtitir vírgula por traço
-    classe = stringr::str_remove_allstr_replace_all(string = classe,",","-")
+    classe = stringr::
+      str_replace_all(string = classe,",","-")
     ) %>% 
   
 # montando o gráfico
   ggplot() +
-  geom_col(aes(x = classe, y = n)) +
+  geom_col(aes(x = classe, y = n, fill = classe)) +
   scale_y_continuous(expand = c(0,0), limits = c(0, 6000)) +
   facet_wrap(~ ano) +
-  #scale_fill_viridis_c(option = "magma") +
+  #scale_fill_manual(values = ("cyan4")) +
+  scale_fill_viridis_d(option = "magma", guide = FALSE) +
   theme_bw() 
 
   
