@@ -25,13 +25,13 @@ base_classes <-
   base %>% 
   dplyr::mutate(
     classes_2007 = cut(dap_2007,
-                       seq(from = 0, to = 70, by = 5)),
+                       seq(from = 10, to = 70, by = 5)),
     classes_2010 = cut(dap_2010,
-                       seq(from = 0, to = 70, by = 5)),
+                       seq(from = 10, to = 70, by = 5)),
     classes_2013 = cut(dap_2013,
-                       seq(from = 0, to = 70, by = 5)),
+                       seq(from = 10, to = 70, by = 5)),
     classes_2016 = cut(dap_2016,
-                       seq(from = 0, to = 70, by = 5))
+                       seq(from = 10, to = 70, by = 5))
     
     )
   
@@ -77,18 +77,20 @@ base_classes %>%
   labs(x = "Classes de diâmetro (cm)", 
        y = "Número de indivíduos",
        caption = "**Dataviz:** @maykongpedro | **Fonte:** UFPR (Laboratório de Inventário Florestal)") +
-  ggtitle("Histórico de classes de diâmetro de um remanescente <br/> de **floresta ombrófila mista**",
+  ggtitle("Histórico de distribuição diamétrica de um remanescente <br/> de **floresta ombrófila mista**",
           subtitle = paste0("Inventário realizado na floresta Capão do Tigre em Curitiba-PR.\n",
-                            "Premissa: medição de apenas árvores com no mínimo 10cm de DAP."))+
+                            "Premissa: DMC de medição foi 10cm de DAP."))+
   theme_bw() +
    theme(
     plot.title = ggtext::element_markdown(),
-    plot.caption = ggtext::element_markdown(hjust = -1.5),
-    axis.title.y = element_text(hjust = -1.5),
-    axis.title.x = element_text(vjust = -1.5),
-    #plot.margin = unit(c(1,1,1,1))
+    plot.caption = ggtext::element_markdown(),
+    axis.title.y = element_text(vjust = 2.3),
+    axis.title.x = element_text(vjust = -1),
+    plot.margin = unit(c(1,1,1,1), "cm")
   )
 
+ggsave("./historico_capao.png",
+       dpi = 300)
   
   
   
